@@ -25,6 +25,6 @@ Route::group($groupData, function () {
     ->only($methods)
     ->names('blog.admin.categories'); 
     Route::apiResource('posts', AdminPostController::class)
-    ->except(['show'])                               //не робити маршрут для метода show
+    ->except(['show'])
     ->names('blog.admin.posts');
 });
