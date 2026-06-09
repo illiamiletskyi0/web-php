@@ -12,7 +12,7 @@ class BlogPostObserver
      */
     public function created(BlogPost $blogPost): void
     {
-        //
+        \App\Jobs\BlogPostAfterCreateJob::dispatch($blogPost);
     }
 
     /**
@@ -28,7 +28,7 @@ class BlogPostObserver
      */
     public function deleted(BlogPost $blogPost): void
     {
-        //
+        \App\Jobs\BlogPostAfterDeleteJob::dispatch($blogPost->id);
     }
 
     /**

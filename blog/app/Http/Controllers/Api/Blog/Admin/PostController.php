@@ -11,6 +11,7 @@ use App\Http\Requests\BlogPostUpdateRequest;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
+
 class PostController extends BaseController
 {
     public function __construct(private BlogPostRepository $blogPostRepository, private BlogCategoryRepository $blogCategoryRepository)
@@ -32,9 +33,9 @@ class PostController extends BaseController
      */
     public function store(BlogPostCreateRequest $request)
     {
-        $data = $request->input(); //отримаємо масив даних, які надійшли з форми
+        $data = $request->input();
 
-        $item = (new BlogPost())->create($data); //створюємо об'єкт і додаємо в БД
+        $item = (new BlogPost())->create($data);
 
         if ($item) {
             return ['success' => 'Успішно збережено'];
@@ -80,6 +81,12 @@ class PostController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $result = BlogPost::destroy($id);
+
+        if ($result) {
+            return ['success' => true, 'message' => 'Успішно видалено'];
+        } else {
+            return ['message' => "Запис id=[{$id}] не знайдено"];
+        }
     }
 }
