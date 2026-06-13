@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Blog;
 
 use App\Models\BlogPost;
+use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 
 class PostController extends BaseController
@@ -34,7 +35,13 @@ class PostController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        $item = BlogPost::with(['category', 'user'])->find($id);
+
+        if (!$item) {
+            return response()->json(['message' => "Запис id=[{$id}] не знайдено"], 404);
+        }
+
+        return new PostResource($item);
     }
 
     /**
