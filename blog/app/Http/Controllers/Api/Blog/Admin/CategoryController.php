@@ -9,7 +9,7 @@ use App\Models\BlogCategory;
 use App\Repositories\BlogCategoryRepository;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Api\Blog\BaseController;
-use App\Http\Resources\CategoryResource;
+use App\Http\Resources\Api\Blog\Admin\CategoryResource;
 
 class CategoryController extends BaseController
 {

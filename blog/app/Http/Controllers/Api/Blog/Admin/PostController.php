@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\Blog\Admin;
 
-
+use App\Http\Resources\Api\Blog\Admin\PostResource;
 use App\Models\BlogPost;
 use App\Http\Requests\BlogPostCreateRequest;
 use App\Repositories\BlogPostRepository;
@@ -18,14 +18,16 @@ class PostController extends BaseController
     {
         //parent::__construct();
     }
-    /**
+     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        // Отримуємо пагіновані дані з репозиторія
         $paginator = $this->blogPostRepository->getAllWithPaginate();
 
-        return $paginator;
+        // Обгортаємо пагінацію в API Ресурс
+        return PostResource::collection($paginator);
     }
 
     /**

@@ -13,6 +13,11 @@ class BlogPost extends Model
 
     use HasFactory;
 
+    protected $casts = [
+        'published_at' => 'datetime',
+        'is_published' => 'boolean',
+    ];
+
     protected $fillable
         = [
             'title',
