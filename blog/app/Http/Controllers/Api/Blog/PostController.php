@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Api\Blog;
 
 use App\Models\BlogPost;
-use App\Http\Resources\PostResource;
+use App\Http\Resources\Api\Blog\PostResource;
+use App\Http\Resources\Api\Blog\PostDetailResource;
 use Illuminate\Http\Request;
 
 class PostController extends BaseController
@@ -13,10 +14,10 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $items = BlogPost::all();
+        $items = BlogPost::with('category')->get();
 
         if (request()->is('api/*')) {
-            return $items;
+            return PostResource::collection($items);
         }
 
         return view('blog.posts.index', compact('items'));
@@ -41,7 +42,7 @@ class PostController extends BaseController
             return response()->json(['message' => "Запис id=[{$id}] не знайдено"], 404);
         }
 
-        return new PostResource($item);
+        return new PostDetailResource($item);
     }
 
     /**

@@ -70,7 +70,19 @@ class BlogCategoryObserver
     protected function setSlug(BlogCategory $blogCategory)
     {
         if (empty($blogCategory->slug)) { 
-            $blogCategory->slug = Str::slug($blogCategory->title);
+            $slug = Str::slug($blogCategory->title);
+
+            $i = 0;
+            $baseSlug = $slug;
+            while (BlogCategory::where('slug', $slug)
+                ->when($blogCategory->exists, fn($q) => $q->where('id', '!=', $blogCategory->id))
+                ->exists()
+            ) {
+                $i++;
+                $slug = $baseSlug . '-' . $i;
+            }
+
+            $blogCategory->slug = $slug;
         }
     }
 }

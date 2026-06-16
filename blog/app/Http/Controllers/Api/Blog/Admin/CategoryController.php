@@ -34,6 +34,10 @@ class CategoryController extends BaseController
     public function store(BlogCategoryCreateRequest $request)
     {
         $data = $request->input(); // отримаємо масив даних, які надійшли з форми
+
+        if (!isset($data['parent_id'])) {
+            $data['parent_id'] = BlogCategory::ROOT;
+        }
  
         $item = (new BlogCategory())->create($data); // створюємо об'єкт і додаємо в БД
 
@@ -63,6 +67,11 @@ class CategoryController extends BaseController
         $item = $this->blogCategoryRepository->getEdit($id);
 
         $data = $request->all(); //отримаємо масив даних, які надійшли з форми
+
+        if (!isset($data['parent_id'])) {
+            $data['parent_id'] = BlogCategory::ROOT;
+        }
+
         $result = $item->update($data);  //оновлюємо дані об'єкта і зберігаємо в БД
 
         if ($result) {
@@ -80,6 +89,12 @@ class CategoryController extends BaseController
      */
     public function destroy(string $id)
     {
-        //dd(__METHOD__);
+        $result = BlogCategory::destroy($id);
+
+        if ($result) {
+            return ['success' => true, 'message' => 'Успішно видалено'];
+        } else {
+            return ['message' => "Запис id=[{$id}] не знайдено"];
+        }
     }
 }
